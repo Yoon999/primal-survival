@@ -41,7 +41,6 @@ public class BuildingPlacementSystem : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, groundLayer))
         {
-            Debug.Log("hello");
             previewObject.transform.position = hit.point;
             canPlace = CheckPlacement(hit.point);
             previewRenderer.material = canPlace ? validPlacementMaterial : invalidPlacementMaterial;
@@ -51,21 +50,13 @@ public class BuildingPlacementSystem : MonoBehaviour
     // 건물 배치
     private void HandlePlacement()
     {
-        if (Input.GetMouseButtonDown(0) && canPlace)
+        if (!Input.GetMouseButtonDown(0) || !canPlace)
         {
-            Vector3 placementPosition = previewObject.transform.position;
-
-            // 건설 시도
-            if (ResourceManager.Instance.ConsumeResource(ResourceManager.ResourceType.Materials, 50)) 
-            {
-                GameObject newBuilding = Instantiate(buildingPrefab, placementPosition, Quaternion.identity);
-                BuildingManager.Instance.RegisterBuilding(newBuilding);
-            }
-            else
-            {
-                Debug.LogWarning("자원이 부족합니다!");
-            }
+            return;
         }
+        
+        Vector3 placementPosition = previewObject.transform.position;
+        BuildingManager.Instance.TryBuild(buildingPrefab, placementPosition, ResourceManager.ResourceType.Materials, 50);
     }
 
     // 배치 가능 여부 체크

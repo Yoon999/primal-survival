@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class BuildingManager : MonoBehaviour
 {
     public static BuildingManager Instance { get; private set; }
-    public GameObject buildingPrefab;
+    [FormerlySerializedAs("buildingPrefab")] public GameObject buildingPrefabTest;
 
     private List<GameObject> buildings = new List<GameObject>(); // 배치된 건물 리스트
 
@@ -24,7 +25,7 @@ public class BuildingManager : MonoBehaviour
     private void Start()
     {
         BuildingPlacementSystem bps = gameObject.AddComponent<BuildingPlacementSystem>();
-        bps.buildingPrefab = buildingPrefab;
+        bps.buildingPrefab = buildingPrefabTest;
     }
 
     private void Update()
@@ -36,6 +37,21 @@ public class BuildingManager : MonoBehaviour
                 updatableBuilding.UpdateBuilding();
             }
         }
+    }
+    
+    public bool TryBuild(GameObject buildingPrefab, Vector3 position, ResourceManager.ResourceType requiredResource, int resourceCost)
+    {
+        if (!ResourceManager.Instance.ConsumeResource(requiredResource, resourceCost))
+        {
+            Debug.LogWarning("자원이 부족하여 건설할 수 없습니다!");
+            return false;
+        }
+        
+        GameObject newBuilding = Instantiate(buildingPrefab, position, Quaternion.identity);
+        RegisterBuilding(newBuilding);
+        Debug.Log("건물이 성공적으로 배치되었습니다!");
+        
+        return true;
     }
     
     // 건물 추가
