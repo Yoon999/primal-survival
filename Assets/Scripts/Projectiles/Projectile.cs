@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class Projectile : MonoBehaviour
 
     public void Initialize(Transform targetTransform)
     {
+        target = targetTransform;
+    }
+
+    private void Awake()
+    {
+        // TODO: REMOVE THIS
+        var targetTransform = new GameObject().transform;
+        targetTransform.position = new Vector3(10f, 2.5f, 0f);
         target = targetTransform;
     }
 

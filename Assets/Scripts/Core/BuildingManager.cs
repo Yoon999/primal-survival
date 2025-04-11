@@ -41,6 +41,7 @@ public class BuildingManager : MonoBehaviour
     
     public bool TryBuild(GameObject buildingPrefab, Vector3 position, ResourceManager.ResourceType requiredResource, int resourceCost)
     {
+        Debug.Log(ResourceManager.Instance);
         if (!ResourceManager.Instance.ConsumeResource(requiredResource, resourceCost))
         {
             Debug.LogWarning("자원이 부족하여 건설할 수 없습니다!");

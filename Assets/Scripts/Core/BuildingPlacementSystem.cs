@@ -56,6 +56,7 @@ public class BuildingPlacementSystem : MonoBehaviour
         }
         
         Vector3 placementPosition = previewObject.transform.position;
+        // TODO: 자원 데이터테이블 만들기
         BuildingManager.Instance.TryBuild(buildingPrefab, placementPosition, ResourceManager.ResourceType.Materials, 50);
     }
 
