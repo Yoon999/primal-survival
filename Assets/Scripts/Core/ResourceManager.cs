@@ -14,8 +14,6 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    public static ResourceManager Instance { get; private set; }
-
     public enum ResourceType
     {
         Food,
@@ -25,18 +23,14 @@ public class ResourceManager : MonoBehaviour
     }
 
     private readonly Dictionary<ResourceType, int> resources = new();
-    public event Action<ResourceType, int> OnResourceChanged;
+    public static ResourceManager Instance { get; private set; }
 
     private void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
-        }
 
         // 자원 초기값 설정
         resources[ResourceType.Food] = 100;
@@ -45,6 +39,8 @@ public class ResourceManager : MonoBehaviour
         resources[ResourceType.Artifact] = 0;
     }
 
+    public event Action<ResourceType, int> OnResourceChanged;
+
     // 자원 획득
     public void AddResource(ResourceType type, int amount)
     {
@@ -52,7 +48,7 @@ public class ResourceManager : MonoBehaviour
         {
             return;
         }
-        
+
         resources[type] += amount;
         OnResourceChanged?.Invoke(type, resources[type]);
     }
@@ -60,14 +56,14 @@ public class ResourceManager : MonoBehaviour
     // 자원 소모
     public bool ConsumeResource(ResourceType type, int amount)
     {
-        if (amount <= 0 || resources[type] < amount)
+        if (amount < 0 || resources[type] < amount)
         {
             return false;
         }
-        
+
         resources[type] -= amount;
         OnResourceChanged?.Invoke(type, resources[type]);
-        
+
         return true;
     }
 

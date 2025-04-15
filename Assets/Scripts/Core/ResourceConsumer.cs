@@ -19,7 +19,7 @@ public class ResourceConsumer : MonoBehaviour
     public int consumeAmount = 10;
     public float consumeInterval = 5.0f;
 
-    private bool isConsuming = false;
+    private bool isConsuming;
 
     private void Start()
     {
@@ -33,18 +33,18 @@ public class ResourceConsumer : MonoBehaviour
         while (isConsuming)
         {
             yield return new WaitForSeconds(consumeInterval);
-            
+
             // 자원 소비 시도
-            bool success = ResourceManager.Instance.ConsumeResource(resourceType, consumeAmount);
+            var success = ResourceManager.Instance.ConsumeResource(resourceType, consumeAmount);
 
             // 자원이 부족하면 소비 중지
             if (success)
             {
                 continue;
             }
-            
+
             Debug.LogWarning($"{resourceType}이 부족하여 소비를 중지합니다.");
-            StopConsuming();
+            StopConsume();
         }
     }
 
@@ -55,7 +55,7 @@ public class ResourceConsumer : MonoBehaviour
     }
 
     // 소비 중지
-    public void StopConsuming()
+    public void StopConsume()
     {
         isConsuming = false;
     }

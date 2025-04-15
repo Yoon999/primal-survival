@@ -19,7 +19,7 @@ public class ResourceCollector : MonoBehaviour
     public int gatherAmount = 5;
     public float gatherInterval = 3.0f;
 
-    private bool isCollecting = false;
+    private bool isCollecting;
 
     private void Start()
     {
