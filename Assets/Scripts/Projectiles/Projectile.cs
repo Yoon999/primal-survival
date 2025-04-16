@@ -5,6 +5,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 10f;
     public float damage = 20f;
+    public float lifetime = 5f;
     public bool isHoming = false;
 
     private Transform target;
@@ -16,10 +17,9 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
+        Destroy(gameObject, lifetime);
         // TODO: REMOVE THIS
-        var targetTransform = new GameObject().transform;
-        targetTransform.position = new Vector3(10f, 2.5f, 0f);
-        target = targetTransform;
+        target = GameObject.Find("Target Test").transform;
     }
 
     private void Update()
@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
 
         if (isHoming)
         {
-            transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 10f);
+            transform.forward = Vector3.Lerp(transform.forward, direction, Time.deltaTime * 100f);
         }
 
         transform.position += transform.forward * (speed * Time.deltaTime);

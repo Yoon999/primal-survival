@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f578da0ae51425db9918b467d1e2916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 30
   damage: 20
-  isHoming: 0
+  lifetime: 10
+  isHoming: 1
